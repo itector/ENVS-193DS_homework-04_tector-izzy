@@ -163,7 +163,7 @@ Both the ANOVA table and the summary object gives the F-statistic, P value, and 
 
 9.  
 
-The test results have proven that the trout perches length is an effective predictor of the weight of the fishes throughout all years. This was shown through the p-value, given as 2.2e-16, which is \<0.001, so I reject the null hypothesis. The sum of squares (1432) and the mean squares (1432) of the length of the fish show that the variation in fish weight is proportional to the variation in fish length. The R-squared value (0.8164) shows that the data follows a linear regression line.
+The test results have proven that the trout perches length is an effective predictor of the weight of the fishes throughout all years. This was shown through the p-value, given as 2.2e-16, which is \<0.001, so I reject the null hypothesis. The sum of squares (1432) and the mean squares (1432) of the length of the fish show that the variation in fish weight is proportional to the variation in fish length. The R-squared value (0.8164) shows that the data follows a linear regression line. The model equation would be for every increase of one millimeter of fish length, the weight would be predicted to increase by 0.20 +/- 0.006 grams.
 
 10. 
 
