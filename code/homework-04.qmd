@@ -14,6 +14,8 @@ Izzy Tector
 
 5/23/23
 
+Link to repo [here](https://github.com/itector/ENVS-193DS_homework-04_tector-izzy.git).
+
 ```{r setting-up}
 library(tidyverse)
 library(lterdatasampler)
