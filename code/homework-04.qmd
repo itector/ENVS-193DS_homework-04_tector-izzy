@@ -96,7 +96,8 @@ par(mfrow = c(2, 2))
 plot(modelobject)
 ```
 
-```{r dev-off, results= false}
+```{r dev-off}
+# document would not render with the resultf = false on
 dev.off()
 ```
 
