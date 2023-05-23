@@ -2,7 +2,7 @@
 
 This README.txt file was generated on 2023-05-22 by IZZY TECTOR
 
-Link to GitHub repository found here.
+Link to GitHub repository found [here](https://github.com/itector/ENVS-193DS_homework-04_tector-izzy.git).
 
 ## General Information
 
