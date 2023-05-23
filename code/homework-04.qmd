@@ -67,7 +67,7 @@ visualizing missing data
 gg_miss_var(trout_perch)
 ```
 
-**Figure 1. Trout perch data frame missing value visualization throughout all years.** Variables on the y axis of trout perch collected from North Temperate Lakes LTER. X axis represents the number of missing data points from each of the variables. Sex, flag, fishpart, sampletype, and weight all have missing data points.
+**Figure 1. Trout perch data frame missing value visualization throughout all years.** Variables of trout perch data collected from North Temperate Lakes LTER are represented on y axis. X axis represents the number of missing data points from each of the variables. Sex, flag, fishpart, sampletype, and weight all have missing data points.
 
 a\. Since there is a lot of the weight data missing, this could heavily affect the my hypothesis and testing of the relationship between the length and the weight of the trout perches.
 
@@ -195,3 +195,5 @@ plot_predictions <- ggplot(data = trout_perch,
 
 plot_predictions
 ```
+
+**Figure 2. Trout perch length predicting weight trends throughout all sample years**. Length (mm) of trout perch collected from North Temperate Lakes LTER represented on the x axis. Weight (g) is represented on the y axis. Dots representing the data points with a line of best fit (magenta) for linear regression model. Transparent ribbon representing the confidence level of the data.
