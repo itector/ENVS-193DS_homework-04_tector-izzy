@@ -1,0 +1,145 @@
+---
+title: "homework-04"
+format: html
+editor: visual
+author: izzy tector
+execute: 
+  warning: false
+  message: false
+---
+
+## Homework 4
+
+Izzy Tector
+
+5/23/23
+
+```{r setting-up}
+library(tidyverse)
+library(lterdatasampler)
+library(here)
+library(extrafont)
+library(performance)
+library(broom)
+library(flextable)
+library(ggeffects)
+library(car)
+library(naniar)
+```
+
+# Problem 1
+
+1.  Mathematical:
+
+    Null Hypothesis:
+
+    There is no linear relationship between the trout perch length and weight.
+
+    Alternative Hypothesis:
+
+    There is a linear relationship between the trout perch length and weight.
+
+Biological:
+
+Null: The trout perch length does not have any effect on the weight of the fishes across all years.
+
+Alternative: The trout perch length predicts the weight of the fished across all years.
+
+2.  
+
+```{r loading-data}
+fish <- read_csv(
+  here("data", "ntl6_v12.csv")
+)
+```
+
+```{r filtering-data}
+trout_perch <- fish %>% 
+  filter(spname == "TROUTPERCH")
+```
+
+visualizing missing data
+
+```{r missing-data-vis}
+gg_miss_var(trout_perch)
+```
+
+a\. Since there is a lot of the weight data missing, this could heavily affect the my hypothesis and testing of the relationship between the length and the weight of the trout perches.
+
+3.  
+
+```{r exploratory-data-vis}
+ggplot(data = trout_perch, aes(x = length, y = weight)) +
+  geom_point()
+```
+
+```{r model-object}
+modelobject <- lm(weight ~ length, data = trout_perch)
+
+modelobject
+```
+
+4.  
+
+```{r linearization-plots}
+par(mfrow = c(2, 2))
+plot(modelobject)
+```
+
+```{r dev-off, results= false}
+dev.off()
+```
+
+5.  
+
+Residuals vs fitted: The data generally fits the dotted line, showing that there is a linear relationship between the variables.
+
+Normal Q-Q: The data fits the linear line fairly well except for the outliers, showing the data is normally distributed.
+
+Scale-Location: The scale-location plot shows the data has equal variation or homoskedasticity across the data frame because it follows the dotted line.
+
+Residuals vs Leverage: Cook's distance shows us that we have an outlier that is affecting our model from our data.
+
+6.  
+
+```{r}
+model_summary <- summary(modelobject)
+
+model_summary
+```
+
+(F1,288 = 1281, p \< 0.001, R\^2 = 0.82
+
+7.  
+
+```{r anova}
+model_anova <- anova(modelobject)
+
+model_anova
+```
+
+```{r}
+# don't name this chunk!
+
+model_anova_table <- tidy(model_anova) %>% 
+  mutate(across(sumsq:meansq, ~ round(.x, digits = 5))) %>% 
+  mutate(statistic = round(statistic, digits = 1)) %>% 
+  mutate(p.value = case_when(
+    p.value < 0.001 ~ "< 0.001"
+  )) %>% 
+  mutate(term = case_when(
+    term == "length" ~ "Length (mm)",
+    TRUE ~ term
+  )) %>% 
+  flextable() %>% 
+  set_header_labels(df = "Degrees of Freedom", 
+                    sumsq = "Sum of squares",
+                    meansq = "Mean squares",
+                    statistic = "F-statistic",
+                    p.value = "p-value")
+
+
+model_anova_table
+```
+
+8.  
