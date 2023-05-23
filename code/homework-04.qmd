@@ -32,11 +32,13 @@ library(naniar)
 1.  Mathematical:
 
     Null Hypothesis:
+    Hₒ : β₁ = 0
 
     There is no linear relationship between the trout perch length and weight.
 
     Alternative Hypothesis:
 
+    Hₐ : β₁ ≠ 0
     There is a linear relationship between the trout perch length and weight.
 
 Biological:
@@ -61,19 +63,24 @@ trout_perch <- fish %>%
 visualizing missing data
 
 ```{r missing-data-vis}
+# visualizing the missing data in the data frame using gg_miss_var
 gg_miss_var(trout_perch)
 ```
+
+**Figure 1. Trout perch data frame missing value visualization throughout all years.** Variables on the y axis of trout perch collected from North Temperate Lakes LTER. X axis represents the number of missing data points from each of the variables. Sex, flag, fishpart, sampletype, and weight all have missing data points.
 
 a\. Since there is a lot of the weight data missing, this could heavily affect the my hypothesis and testing of the relationship between the length and the weight of the trout perches.
 
 3.  
 
 ```{r exploratory-data-vis}
+# create an exploratory data visualization to assess whether the data could have a linear relationship
 ggplot(data = trout_perch, aes(x = length, y = weight)) +
   geom_point()
 ```
 
 ```{r model-object}
+# run the linear regression model and create an object to create plots out of
 modelobject <- lm(weight ~ length, data = trout_perch)
 
 modelobject
@@ -82,6 +89,7 @@ modelobject
 4.  
 
 ```{r linearization-plots}
+# create plots of the model object and section it off into a table of 4 plots
 par(mfrow = c(2, 2))
 plot(modelobject)
 ```
@@ -103,6 +111,7 @@ Residuals vs Leverage: Cook's distance shows us that we have an outlier that is 
 6.  
 
 ```{r}
+# use summary() to create a summary of the model object data and linear regression model
 model_summary <- summary(modelobject)
 
 model_summary
@@ -113,6 +122,7 @@ model_summary
 7.  
 
 ```{r anova}
+# run an anova test to see sum of squares and mean squares
 model_anova <- anova(modelobject)
 
 model_anova
@@ -121,16 +131,21 @@ model_anova
 ```{r}
 # don't name this chunk!
 
+# create a table of the anova test values
 model_anova_table <- tidy(model_anova) %>% 
+  # clean the data up by rounding the numbers
   mutate(across(sumsq:meansq, ~ round(.x, digits = 5))) %>% 
   mutate(statistic = round(statistic, digits = 1)) %>% 
   mutate(p.value = case_when(
+    # clean the p-value up by changing it to be <0.001
     p.value < 0.001 ~ "< 0.001"
   )) %>% 
+  # clean up the names of the titles
   mutate(term = case_when(
     term == "length" ~ "Length (mm)",
     TRUE ~ term
   )) %>% 
+  # make the table a flex table
   flextable() %>% 
   set_header_labels(df = "Degrees of Freedom", 
                     sumsq = "Sum of squares",
@@ -144,24 +159,26 @@ model_anova_table
 
 8.  
 
-Both the ANOVA table and the summary object gives the F-statistic, P value, and degrees of freedom. These values were the same for both with an F value of 1281 (1280.8 for the ANOVA table), a p-value \<0.001, and the degrees of freedom being 1 and 288. The ANOVA table gives the extra information of the sum of squares and the mean squares. and the summary gives residuals values which the ANOVA table does not have.
+Both the ANOVA table and the summary object gives the F-statistic, P value, and degrees of freedom. These values were the same for both with an F value of 1281 (1280.8 for the ANOVA table), a p-value \<0.001 (confidence level of 95%), and the degrees of freedom being 1 and 288 (sample size of 290). The ANOVA table gives the extra information of the sum of squares and the mean squares. and the summary gives residuals values which the ANOVA table does not have.
 
 9.  
 
-The test results have proven that the trout perches length is an effective predictor of the weight of the fishes throughout all years. This was shown through the p-value, given as 2.2e-16, which is \<0.001. The sum of squares (1432) and the mean squares (1432) of the length of the fish show that the variation in fish weight is proportional to the variation in fish length. The R-squared value (0.8164) shows that the data follows a linear regression line.
+The test results have proven that the trout perches length is an effective predictor of the weight of the fishes throughout all years. This was shown through the p-value, given as 2.2e-16, which is \<0.001, so I reject the null hypothesis. The sum of squares (1432) and the mean squares (1432) of the length of the fish show that the variation in fish weight is proportional to the variation in fish length. The R-squared value (0.8164) shows that the data follows a linear regression line.
 
 10. 
 
 ```{r predictions}
+# create an object using ggpredict
 predictions <- ggpredict(modelobject, terms = "length")
 
 predictions
 ```
 
 ```{r plot}
+# create a plot visualizing the data and the predictions
 plot_predictions <- ggplot(data = trout_perch, 
                            aes(x = length, y = weight)) +
-  # first plot the underlying data from maples_data
+  # first plot the underlying data from trout_perch
   geom_point() +
   # then plot the predictions
   geom_line(data = predictions, 
