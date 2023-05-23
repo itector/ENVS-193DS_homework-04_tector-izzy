@@ -190,8 +190,12 @@ plot_predictions <- ggplot(data = trout_perch,
               alpha = 0.2) +
   # theme and meaningful labels
   theme_bw() +
-  labs(x = "Length (mm)",
-       y = "Weight (g)")
+  labs(title = "Trout perch length predicting weight trends throughout all sample years", 
+       x = "Length (mm)",
+       y = "Weight (g)") + 
+  theme(text = element_text(family = "Times New Roman")
+  )
+
 
 plot_predictions
 ```
