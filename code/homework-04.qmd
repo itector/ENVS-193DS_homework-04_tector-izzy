@@ -143,3 +143,38 @@ model_anova_table
 ```
 
 8.  
+
+Both the ANOVA table and the summary object gives the F-statistic, P value, and degrees of freedom. These values were the same for both with an F value of 1281 (1280.8 for the ANOVA table), a p-value \<0.001, and the degrees of freedom being 1 and 288. The ANOVA table gives the extra information of the sum of squares and the mean squares. and the summary gives residuals values which the ANOVA table does not have.
+
+9.  
+
+The test results have proven that the trout perches length is an effective predictor of the weight of the fishes throughout all years. This was shown through the p-value, given as 2.2e-16, which is \<0.001. The sum of squares (1432) and the mean squares (1432) of the length of the fish show that the variation in fish weight is proportional to the variation in fish length. The R-squared value (0.8164) shows that the data follows a linear regression line.
+
+10. 
+
+```{r predictions}
+predictions <- ggpredict(modelobject, terms = "length")
+
+predictions
+```
+
+```{r plot}
+plot_predictions <- ggplot(data = trout_perch, 
+                           aes(x = length, y = weight)) +
+  # first plot the underlying data from maples_data
+  geom_point() +
+  # then plot the predictions
+  geom_line(data = predictions, 
+            aes(x = x, y = predicted), 
+            color = "orchid", linewidth = 1) +
+  # then plot the 95% confidence interval from ggpredict
+  geom_ribbon(data = predictions, 
+              aes(x = x, y = predicted, ymin = conf.low, ymax = conf.high), 
+              alpha = 0.2) +
+  # theme and meaningful labels
+  theme_bw() +
+  labs(x = "Length (mm)",
+       y = "Weight (g)")
+
+plot_predictions
+```
